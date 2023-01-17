@@ -22,47 +22,112 @@
 
   <script src="https://cdn.babylonjs.com/babylon.js"></script>
   <script src="https://cdn.babylonjs.com/loaders/babylonjs.loaders.min.js"></script>
+  <script src="https://cdn.babylonjs.com/materialsLibrary/babylon.shadowOnlyMaterial.js"></script>
 
 </head>
 
 <body>
-
+<h1>cubetrekXS</h1>
 <canvas id="renderCanvas"></canvas>
 
 <script>
   const canvas = document.getElementById("renderCanvas"); // Get the canvas element
   const engine = new BABYLON.Engine(canvas, true); // Generate the BABYLON 3D engine
-  const createScene = function () {
-    // Creates a basic Babylon Scene object
-    const scene = new BABYLON.Scene(engine);
-    // Creates and positions a free camera
-    const camera = new BABYLON.FreeCamera("camera1",
-            new BABYLON.Vector3(0, 5, -10), scene);
-    // Targets the camera to scene origin
+
+  var createScene = async function () {
+    // This creates a basic Babylon Scene object (non-mesh)
+    var scene = new BABYLON.Scene(engine);
+
+    // scene.useDelayedTextureLoading = true;
+
+    // This creates and positions a free camera (non-mesh)
+    var camera = new BABYLON.FreeCamera("camera1", new BABYLON.Vector3(0, 5, -10), scene);
+
+    // This targets the camera to scene origin
     camera.setTarget(BABYLON.Vector3.Zero());
+
     // This attaches the camera to the canvas
     camera.attachControl(canvas, true);
-    // Creates a light, aiming 0,1,0 - to the sky
-    const light = new BABYLON.HemisphericLight("light",
-            new BABYLON.Vector3(0, 1, 0), scene);
-    // Dim the light a small amount - 0 to 1
-    light.intensity = 0.7;
-    // Built-in 'sphere' shape.
-    const sphere = BABYLON.MeshBuilder.CreateSphere("sphere",
-            {diameter: 2, segments: 32}, scene);
-    // Move the sphere upward 1/2 its height
-    sphere.position.y = 1;
-    // Built-in 'ground' shape.
-    const ground = BABYLON.MeshBuilder.CreateGround("ground",
-            {width: 6, height: 6}, scene);
+
+    // Default intensity is 1. Let's dim the light a small amount
+    // light.intensity = 0.7;
+
+    // Our built-in 'ground' shape.
+    var ground = BABYLON.MeshBuilder.CreateGround("ground", { width: 30, height: 30 }, scene);
+    ground.receiveShadows = true;
+    const shadowMaterial = new BABYLON.ShadowOnlyMaterial('shadowOnly', scene);
+    ground.material = shadowMaterial;
+
+    var sphere = BABYLON.MeshBuilder.CreateSphere("sphere", {diameter: 0.2, segments: 32}, scene);
+    var sphere2 = BABYLON.MeshBuilder.CreateSphere("sphere", {diameter: 0.2, segments: 32}, scene);
+    var sphere3 = BABYLON.MeshBuilder.CreateSphere("sphere", {diameter: 0.2, segments: 32}, scene);
+
+    sphere.material = new BABYLON.PBRMaterial('metal', scene);
+    sphere.material.roughness = 0.25;
+    sphere.material.metallic = 1.0;
+    sphere.material.realTimeFiltering = true;
+    sphere.material.realTimeFilteringQuality = BABYLON.Constants.TEXTURE_FILTERING_QUALITY_HIGH;
+    sphere.position.y = 0.1;
+    // sphere.position.z = 1;
+
+    sphere2.setPivotMatrix(BABYLON.Matrix.Translation(0.2, 0.1, 0), false);
+    sphere2.material = new BABYLON.PBRMaterial('metal', scene);
+    sphere2.material.albedoColor = new BABYLON.Color3(0.8, 0.0, 0.3);
+    sphere2.material.roughness = 0.1;
+    sphere2.material.metallic = 0.0;
+
+    sphere3.setPivotMatrix(BABYLON.Matrix.Translation(0.4, 0.1, 0), false);
+    sphere3.material = new BABYLON.PBRMaterial('metal', scene);
+    sphere3.material.roughness = 0.1;
+    sphere3.material.metallic = 0.3;
+    sphere3.material.albedoColor = new BABYLON.Color3(0.3, 0.0, 0.8);
+
+    scene.registerBeforeRender(function () {
+      sphere2.rotation.y += 0.01;
+      sphere3.rotation.y += 0.01;
+    });
+
+    // const mat = new BABYLON.StandardMaterial('mat', scene);
+    // mat.disableLighting = true;
+    // mat.backFaceCulling = false;
+    // ground.material = mat;
+
+    let i = 0;
+
+    scene.createDefaultXRExperienceAsync({
+      uiOptions: {
+        sessionMode: 'immersive-ar',
+        referenceSpaceType: 'local-floor'
+      }
+    }).then((defaultXRExperience) => {
+      const le = defaultXRExperience.baseExperience.featuresManager.enableFeature(BABYLON.WebXRFeatureName.LIGHT_ESTIMATION, 'latest', {
+        setSceneEnvironmentTexture: true,
+        // cubeMapPollInterval: 1000,
+        createDirectionalLightSource: true,
+        // reflectionFormat: 'srgba8',
+        // disableCubeMapReflection: true
+      });
+      const shadowGenerator = new BABYLON.ShadowGenerator(512, le.directionalLight)
+      shadowGenerator.useBlurExponentialShadowMap = true;
+      shadowGenerator.blurScale = 2;
+      shadowGenerator.setDarkness(0.1);
+      shadowGenerator.getShadowMap().renderList.push(sphere, sphere2, sphere3);
+    });
+
+    scene.onDisposeObservable.add(() => {
+    })
+
     return scene;
   };
-  const scene = createScene(); //Call the createScene function
-  // Register a render loop to repeatedly render the scene
-  engine.runRenderLoop(function () {
-    scene.render();
+  createScene().then(scene => {
+    engine.runRenderLoop(function () {
+      scene.render();
+    });
   });
-  // Watch for browser/canvas resize events
+
+
+
+
   window.addEventListener("resize", function () {
     engine.resize();
   });
