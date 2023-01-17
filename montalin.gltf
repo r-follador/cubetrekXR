@@ -712,35 +712,35 @@
 }],
 "images" : [
 {
-   "uri" : "https://cubetrek.com/api/gltf/map/standard/14/8625/5771.png"
+   "uri" : "map/Map_A1.png"
 },{
-   "uri" : "https://cubetrek.com/api/gltf/map/standard/14/8625/5772.png"
+   "uri" : "map/Map_A2.png"
 },{
-   "uri" : "https://cubetrek.com/api/gltf/map/standard/14/8625/5773.png"
+   "uri" : "map/Map_A3.png"
 },{
-   "uri" : "https://cubetrek.com/api/gltf/map/standard/14/8626/5771.png"
+   "uri" : "map/Map_B1.png"
 },{
-   "uri" : "https://cubetrek.com/api/gltf/map/standard/14/8626/5772.png"
+   "uri" : "map/Map_B2.png"
 },{
-   "uri" : "https://cubetrek.com/api/gltf/map/standard/14/8626/5773.png"
+   "uri" : "map/Map_B3.png"
 },{
-   "uri" : "https://cubetrek.com/api/gltf/map/standard/14/8627/5771.png"
+   "uri" : "map/Map_C1.png"
 },{
-   "uri" : "https://cubetrek.com/api/gltf/map/standard/14/8627/5772.png"
+   "uri" : "map/Map_C2.png"
 },{
-   "uri" : "https://cubetrek.com/api/gltf/map/standard/14/8627/5773.png"
+   "uri" : "map/Map_C3.png"
 },{
-   "uri" : "https://cubetrek.com/api/gltf/map/standard/14/8628/5771.png"
+   "uri" : "map/Map_D1.png"
 },{
-   "uri" : "https://cubetrek.com/api/gltf/map/standard/14/8628/5772.png"
+   "uri" : "map/Map_D2.png"
 },{
-   "uri" : "https://cubetrek.com/api/gltf/map/standard/14/8628/5773.png"
+   "uri" : "map/Map_D3.png"
 },{
-   "uri" : "https://cubetrek.com/api/gltf/map/standard/14/8629/5771.png"
+   "uri" : "map/Map_E1.png"
 },{
-   "uri" : "https://cubetrek.com/api/gltf/map/standard/14/8629/5772.png"
+   "uri" : "map/Map_E2.png"
 },{
-   "uri" : "https://cubetrek.com/api/gltf/map/standard/14/8629/5773.png"
+   "uri" : "map/Map_E3.png"
 }],
 "samplers" : [
 {
