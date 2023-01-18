@@ -60,7 +60,7 @@
     sphere.material.realTimeFiltering = true;
     sphere.material.realTimeFilteringQuality = BABYLON.Constants.TEXTURE_FILTERING_QUALITY_HIGH;
     sphere.position.y = 0.1;
-    sphere.position.z = 1;
+    sphere.position.z = 3;
 
     sphere2.setPivotMatrix(BABYLON.Matrix.Translation(0.2, 0.1, 0), false);
     sphere2.material = new BABYLON.PBRMaterial('metal', scene);
@@ -81,8 +81,8 @@
 
     terrainDel = await BABYLON.SceneLoader.ImportMeshAsync("","", "montalin.gltf", scene);
     terrain = new BABYLON.TransformNode();
-    terrain.scaling = new BABYLON.Vector3(0.0001, 0.0001, 0.0001);
-    terrain.rotate(new BABYLON.Vector3(1, 0, 0), -90, BABYLON.Space.WORLD);
+    terrain.scaling = new BABYLON.Vector3(0.0005, -0.0005, 0.0005);
+    terrain.rotate(new BABYLON.Vector3(1, 0, 0), -1.5708, BABYLON.Space.WORLD);
 
     terrainDel.meshes.forEach(parentMesh => {
       parentMesh.getChildren().forEach(mesh => {
@@ -93,6 +93,12 @@
         mesh.setVerticesData(BABYLON.VertexBuffer.NormalKind, normals);
         if (mesh.getVerticesData(BABYLON.VertexBuffer.UVKind)) { //ignore the
           meshes.push(mesh);
+        } else {
+          mesh.material = new BABYLON.PBRMaterial('metal', scene);
+          mesh.material.roughness = 0.25;
+          mesh.material.metallic = 1.0;
+          mesh.material.realTimeFiltering = true;
+          mesh.material.realTimeFilteringQuality = BABYLON.Constants.TEXTURE_FILTERING_QUALITY_HIGH;
         }
         //mesh.forceSharedVertices();
       })
