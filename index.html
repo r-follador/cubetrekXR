@@ -94,7 +94,7 @@
         sessionMode: 'immersive-ar',
         referenceSpaceType: 'local-floor'
       },
-      optionalFeatures: ["hit-test", "anchors"],
+      optionalFeatures: ["hit-test",
     }).then((defaultXRExperience) => {
       const le = defaultXRExperience.baseExperience.featuresManager.enableFeature(BABYLON.WebXRFeatureName.LIGHT_ESTIMATION, 'latest', {
         setSceneEnvironmentTexture: true,
@@ -105,7 +105,6 @@
       });
 
       const xrTest = defaultXRExperience.baseExperience.featuresManager.enableFeature(BABYLON.WebXRHitTest, 'latest');
-      const anchors = defaultXRExperience.baseExperience.featuresManager.enableFeature(BABYLON.WebXRAnchorSystem.Name, 'latest');
 
       const marker = BABYLON.MeshBuilder.CreateTorus('marker', { diameter: 0.15, thickness: 0.05 });
       marker.isVisible = false;
@@ -123,16 +122,10 @@
         }
       });
 
-      if (anchors) {
-        console.log('anchors attached');
-        anchors.onAnchorAddedObservable.add(anchor => {
-          anchor.attachedNode = terrain;
-        });
-      }
-
       scene.onPointerDown = (evt, pickInfo) => {
         if (hitTest && defaultXRExperience.baseExperience.state === BABYLON.WebXRState.IN_XR) {
-          anchors.addAnchorPointUsingHitTestResultAsync(hitTest);
+          hitTest.transformationMatrix.decompose(undefined, undefined, terrain.position);
+          hitTest.transformationMatrix.decompose(undefined, undefined, ground.position);
         }
       }
 
