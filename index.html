@@ -51,16 +51,6 @@
     ground.receiveShadows = true;
     ground.material = new BABYLON.ShadowOnlyMaterial('shadowOnly', scene);
 
-    var sphere = BABYLON.MeshBuilder.CreateSphere("sphere", {diameter: 0.2, segments: 32}, scene);
-
-    sphere.material = new BABYLON.PBRMaterial('metal', scene);
-    sphere.material.roughness = 0.25;
-    sphere.material.metallic = 1.0;
-    sphere.material.realTimeFiltering = true;
-    sphere.material.realTimeFilteringQuality = BABYLON.Constants.TEXTURE_FILTERING_QUALITY_HIGH;
-    sphere.position.y = 0.1;
-    sphere.position.z = 3;
-
     var sideMaterial = new BABYLON.PBRMaterial('metal', scene);
     sideMaterial.roughness = 0.25;
     sideMaterial.metallic = 1.0;
@@ -71,6 +61,7 @@
     terrain = new BABYLON.TransformNode();
     terrain.scaling = new BABYLON.Vector3(0.0001, -0.0001, 0.0001);
     terrain.rotate(new BABYLON.Vector3(1, 0, 0), -1.5708, BABYLON.Space.WORLD);
+    terrain.position.z = 1.5;
 
     terrainDel.meshes.forEach(parentMesh => {
       parentMesh.getChildren().forEach(mesh => {
@@ -110,8 +101,8 @@
       shadowGenerator.useBlurExponentialShadowMap = true;
       shadowGenerator.blurScale = 2;
       shadowGenerator.setDarkness(0.1);
-      shadowGenerator.getShadowMap().renderList.push(sphere);
       sides.forEach(mesh => shadowGenerator.getShadowMap().renderList.push(mesh));
+      meshes.forEach(mesh => shadowGenerator.getShadowMap().renderList.push(mesh));
     });
 
     scene.onDisposeObservable.add(() => {
