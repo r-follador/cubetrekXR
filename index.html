@@ -37,6 +37,7 @@
   var terrain;
   let terrainDel;
   var meshes = [];
+  var sides = [];
   const zscaling = 1.5;
 
   var createScene = async function () {
@@ -51,8 +52,6 @@
     ground.material = new BABYLON.ShadowOnlyMaterial('shadowOnly', scene);
 
     var sphere = BABYLON.MeshBuilder.CreateSphere("sphere", {diameter: 0.2, segments: 32}, scene);
-    var sphere2 = BABYLON.MeshBuilder.CreateSphere("sphere", {diameter: 0.2, segments: 32}, scene);
-    var sphere3 = BABYLON.MeshBuilder.CreateSphere("sphere", {diameter: 0.2, segments: 32}, scene);
 
     sphere.material = new BABYLON.PBRMaterial('metal', scene);
     sphere.material.roughness = 0.25;
@@ -62,26 +61,15 @@
     sphere.position.y = 0.1;
     sphere.position.z = 3;
 
-    sphere2.setPivotMatrix(BABYLON.Matrix.Translation(0.2, 0.1, 0), false);
-    sphere2.material = new BABYLON.PBRMaterial('metal', scene);
-    sphere2.material.albedoColor = new BABYLON.Color3(0.8, 0.0, 0.3);
-    sphere2.material.roughness = 0.1;
-    sphere2.material.metallic = 0.0;
-
-    sphere3.setPivotMatrix(BABYLON.Matrix.Translation(0.4, 0.1, 0), false);
-    sphere3.material = new BABYLON.PBRMaterial('metal', scene);
-    sphere3.material.roughness = 0.1;
-    sphere3.material.metallic = 0.3;
-    sphere3.material.albedoColor = new BABYLON.Color3(0.3, 0.0, 0.8);
-
-    scene.registerBeforeRender(function () {
-      sphere2.rotation.y += 0.01;
-      sphere3.rotation.y += 0.01;
-    });
+    var sideMaterial = new BABYLON.PBRMaterial('metal', scene);
+    sideMaterial.roughness = 0.25;
+    sideMaterial.metallic = 1.0;
+    sideMaterial.realTimeFiltering = true;
+    sideMaterial.realTimeFilteringQuality = BABYLON.Constants.TEXTURE_FILTERING_QUALITY_HIGH;
 
     terrainDel = await BABYLON.SceneLoader.ImportMeshAsync("","", "montalin.gltf", scene);
     terrain = new BABYLON.TransformNode();
-    terrain.scaling = new BABYLON.Vector3(0.0005, -0.0005, 0.0005);
+    terrain.scaling = new BABYLON.Vector3(0.0002, -0.0002, 0.0002);
     terrain.rotate(new BABYLON.Vector3(1, 0, 0), -1.5708, BABYLON.Space.WORLD);
 
     terrainDel.meshes.forEach(parentMesh => {
@@ -91,16 +79,12 @@
         var normals = [];
         BABYLON.VertexData.ComputeNormals(mesh.getVerticesData(BABYLON.VertexBuffer.PositionKind), mesh.getIndices(), normals);
         mesh.setVerticesData(BABYLON.VertexBuffer.NormalKind, normals);
-        if (mesh.getVerticesData(BABYLON.VertexBuffer.UVKind)) { //ignore the
+        if (mesh.getVerticesData(BABYLON.VertexBuffer.UVKind)) {
           meshes.push(mesh);
         } else {
-          mesh.material = new BABYLON.PBRMaterial('metal', scene);
-          mesh.material.roughness = 0.25;
-          mesh.material.metallic = 1.0;
-          mesh.material.realTimeFiltering = true;
-          mesh.material.realTimeFilteringQuality = BABYLON.Constants.TEXTURE_FILTERING_QUALITY_HIGH;
+          mesh.material = sideMaterial;
+          sides.push(mesh);
         }
-        //mesh.forceSharedVertices();
       })
     })
 
@@ -126,7 +110,8 @@
       shadowGenerator.useBlurExponentialShadowMap = true;
       shadowGenerator.blurScale = 2;
       shadowGenerator.setDarkness(0.1);
-      shadowGenerator.getShadowMap().renderList.push(sphere, sphere2, sphere3);
+      shadowGenerator.getShadowMap().renderList.push(sphere);
+      sides.forEach(mesh => shadowGenerator.getShadowMap().renderList.push(mesh));
     });
 
     scene.onDisposeObservable.add(() => {
