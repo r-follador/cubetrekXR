@@ -105,6 +105,7 @@
       });
 
       const xrTest = defaultXRExperience.baseExperience.featuresManager.enableFeature(BABYLON.WebXRHitTest, 'latest');
+      const anchors = fm.enableFeature(BABYLON.WebXRAnchorSystem.Name, 'latest');
 
       const marker = BABYLON.MeshBuilder.CreateTorus('marker', { diameter: 0.15, thickness: 0.05 });
       marker.isVisible = false;
@@ -126,6 +127,12 @@
           marker.isVisible = false;
         }
       });
+
+      scene.onPointerDown = (evt, pickInfo) => {
+        if (hitTest && defaultXRExperience.baseExperience.state === BABYLON.WebXRState.IN_XR) {
+          hitTest.transformationMatrix.decompose(undefined, undefined, terrain.position);
+        }
+      }
 
 
       const shadowGenerator = new BABYLON.ShadowGenerator(1024, le.directionalLight)
