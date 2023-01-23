@@ -114,23 +114,25 @@
       let hitTest;
 
       xrTest.onHitTestResultObservable.add((results) => {
-        console.log("hit test");
-        console.log(results);
         if (results.length) {
           marker.isVisible = true;
           hitTest = results[0];
           hitTest.transformationMatrix.decompose(marker.scaling, marker.rotationQuaternion, marker.position);
-          console.log("marker scaling "+marker.scaling);
-          console.log("marker.rotationQuaternion "+marker.rotationQuaternion);
-          console.log("marker.position "+marker.position);
         } else {
           marker.isVisible = false;
         }
       });
 
+      if (anchors) {
+        console.log('anchors attached');
+        anchors.onAnchorAddedObservable.add(anchor => {
+          anchor.attachedNode = terrain;
+        });
+      }
+
       scene.onPointerDown = (evt, pickInfo) => {
         if (hitTest && defaultXRExperience.baseExperience.state === BABYLON.WebXRState.IN_XR) {
-          hitTest.transformationMatrix.decompose(undefined, undefined, terrain.position);
+          anchors.addAnchorPointUsingHitTestResultAsync(hitTest);
         }
       }
 
