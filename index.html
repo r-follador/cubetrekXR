@@ -94,7 +94,7 @@
         sessionMode: 'immersive-ar',
         referenceSpaceType: 'local-floor'
       },
-      optionalFeatures: ["hit-test",
+      optionalFeatures: ["hit-test"]
     }).then((defaultXRExperience) => {
       const le = defaultXRExperience.baseExperience.featuresManager.enableFeature(BABYLON.WebXRFeatureName.LIGHT_ESTIMATION, 'latest', {
         setSceneEnvironmentTexture: true,
