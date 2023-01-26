@@ -1,162 +1,27 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
-
+<html lang="en">
+<script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
 <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-  <title>CubetrekXR</title>
-
-  <style>
-    html, body {
-      overflow: hidden;
-      width: 100%;
-      height: 100%;
-      margin: 0;
-      padding: 0;
-    }
-    #renderCanvas {
-      width: 100%;
-      height: 100%;
-      touch-action: none;
-    }
-  </style>
-
-  <script src="https://cdn.babylonjs.com/babylon.js"></script>
-  <script src="https://cdn.babylonjs.com/loaders/babylonjs.loaders.min.js"></script>
-  <script src="https://cdn.babylonjs.com/materialsLibrary/babylon.shadowOnlyMaterial.js"></script>
-
+    <meta charset="UTF-8">
+    <title>Title</title>
 </head>
-
 <body>
-<h1>cubetrekXS</h1>
-<canvas id="renderCanvas"></canvas>
 
-<script>
-  const canvas = document.getElementById("renderCanvas"); // Get the canvas element
-  const engine = new BABYLON.Engine(canvas, true); // Generate the BABYLON 3D engine
+<a href="webxr.html">WebXR Example</a>
 
-  var terrain;
-  let terrainDel;
-  var meshes = [];
-  var sides = [];
-  const zscaling = 1.5;
+<h1>Model Viewer</h1>
+<model-viewer src="montalin.gltf" ar ar-modes="webxr scene-viewer quick-look" camera-controls shadow-intensity="1">
+    <div class="progress-bar hide" slot="progress-bar">
+        <div class="update-bar"></div>
+    </div>
+    <button slot="ar-button" id="ar-button">
+        View in your space
+    </button>
+    <div id="ar-prompt">
+        <img src="https://modelviewer.dev/shared-assets/icons/hand.png">
+    </div>
+</model-viewer>
 
-  var createScene = async function () {
-    var scene = new BABYLON.Scene(engine);
-    var camera = new BABYLON.FreeCamera("camera1", new BABYLON.Vector3(0, 5, -10), scene);
-    camera.setTarget(BABYLON.Vector3.Zero());
-    camera.attachControl(canvas, true);
-
-    const available = await BABYLON.WebXRSessionManager.IsSessionSupportedAsync('immersive-ar');
-    if (!available) {
-      alert('immersive-ar WebXR session mode is not available in your browser.');
-    }
-
-    // Our built-in 'ground' shape.
-    var ground = BABYLON.MeshBuilder.CreateGround("ground", { width: 30, height: 30 }, scene);
-    ground.receiveShadows = true;
-    ground.material = new BABYLON.ShadowOnlyMaterial('shadowOnly', scene);
-
-    var sideMaterial = new BABYLON.PBRMaterial('metal', scene);
-    sideMaterial.roughness = 0.25;
-    sideMaterial.metallic = 1.0;
-    sideMaterial.realTimeFiltering = true;
-    sideMaterial.realTimeFilteringQuality = BABYLON.Constants.TEXTURE_FILTERING_QUALITY_HIGH;
-
-    terrainDel = await BABYLON.SceneLoader.ImportMeshAsync("","", "montalin.gltf", scene);
-    terrain = new BABYLON.TransformNode();
-    //terrain.scaling = new BABYLON.Vector3(0.0001, -0.0001, 0.0001);
-    //terrain.rotate(new BABYLON.Vector3(1, 0, 0), -1.5708, BABYLON.Space.WORLD);
-    //terrain.position.z = 1;
-
-    terrainDel.meshes.forEach(parentMesh => {
-      parentMesh.getChildren().forEach(mesh => {
-        mesh.parent = terrain;
-        mesh.scaling.z = zscaling;
-        var normals = [];
-        BABYLON.VertexData.ComputeNormals(mesh.getVerticesData(BABYLON.VertexBuffer.PositionKind), mesh.getIndices(), normals);
-        mesh.setVerticesData(BABYLON.VertexBuffer.NormalKind, normals);
-        if (mesh.getVerticesData(BABYLON.VertexBuffer.UVKind)) {
-          meshes.push(mesh);
-        } else {
-          mesh.material = sideMaterial;
-          sides.push(mesh);
-        }
-      })
-    })
-
-    // const mat = new BABYLON.StandardMaterial('mat', scene);
-    // mat.disableLighting = true;
-    // mat.backFaceCulling = false;
-    // ground.material = mat;
-
-    scene.createDefaultXRExperienceAsync({
-      uiOptions: {
-        sessionMode: 'immersive-ar',
-        referenceSpaceType: 'local-floor'
-      },
-      optionalFeatures: ["hit-test"]
-    }).then((defaultXRExperience) => {
-      const le = defaultXRExperience.baseExperience.featuresManager.enableFeature(BABYLON.WebXRFeatureName.LIGHT_ESTIMATION, 'latest', {
-        setSceneEnvironmentTexture: true,
-        // cubeMapPollInterval: 1000,
-        createDirectionalLightSource: true,
-        // reflectionFormat: 'srgba8',
-        // disableCubeMapReflection: true
-      });
-
-      const xrTest = defaultXRExperience.baseExperience.featuresManager.enableFeature(BABYLON.WebXRHitTest, 'latest');
-
-      const marker = BABYLON.MeshBuilder.CreateTorus('marker', { diameter: 0.15, thickness: 0.05 });
-      marker.isVisible = false;
-      marker.rotationQuaternion = new BABYLON.Quaternion();
-
-      let hitTest;
-
-      xrTest.onHitTestResultObservable.add((results) => {
-        if (results.length) {
-          marker.isVisible = true;
-          hitTest = results[0];
-          hitTest.transformationMatrix.decompose(marker.scaling, marker.rotationQuaternion, marker.position);
-        } else {
-          marker.isVisible = false;
-        }
-      });
-
-      scene.onPointerDown = (evt, pickInfo) => {
-        if (hitTest && defaultXRExperience.baseExperience.state === BABYLON.WebXRState.IN_XR) {
-          hitTest.transformationMatrix.decompose(undefined, undefined, terrain.position);
-          hitTest.transformationMatrix.decompose(undefined, undefined, ground.position);
-        }
-      }
-
-
-      const shadowGenerator = new BABYLON.ShadowGenerator(1024, le.directionalLight)
-      shadowGenerator.useBlurExponentialShadowMap = true;
-      shadowGenerator.blurScale = 2;
-      shadowGenerator.setDarkness(0.1);
-      sides.forEach(mesh => shadowGenerator.getShadowMap().renderList.push(mesh));
-      meshes.forEach(mesh => shadowGenerator.getShadowMap().renderList.push(mesh));
-    });
-
-    scene.onDisposeObservable.add(() => {
-    })
-
-    return scene;
-  };
-  createScene().then(scene => {
-    engine.runRenderLoop(function () {
-      scene.render();
-    });
-  });
-
-
-
-
-  window.addEventListener("resize", function () {
-    engine.resize();
-  });
-</script>
 
 </body>
-
 </html>
