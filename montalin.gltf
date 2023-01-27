@@ -572,128 +572,128 @@
      "baseColorTexture" : {
         "index" : 0
       },
-     "metallicFactor" : 0.0,
-     "roughnessFactor" : 1.0
+     "metallicfactor" : 0.1,
+     "metallicfactor" : 0.8
     }
 },{
    "pbrMetallicRoughness" : {
      "baseColorTexture" : {
         "index" : 1
       },
-     "metallicFactor" : 0.0,
-     "roughnessFactor" : 1.0
+     "metallicfactor" : 0.1,
+     "metallicfactor" : 0.8
     }
 },{
    "pbrMetallicRoughness" : {
      "baseColorTexture" : {
         "index" : 2
       },
-     "metallicFactor" : 0.0,
-     "roughnessFactor" : 1.0
+     "metallicfactor" : 0.1,
+     "metallicfactor" : 0.8
     }
 },{
    "pbrMetallicRoughness" : {
      "baseColorTexture" : {
         "index" : 3
       },
-     "metallicFactor" : 0.0,
-     "roughnessFactor" : 1.0
+     "metallicfactor" : 0.1,
+     "metallicfactor" : 0.8
     }
 },{
    "pbrMetallicRoughness" : {
      "baseColorTexture" : {
         "index" : 4
       },
-     "metallicFactor" : 0.0,
-     "roughnessFactor" : 1.0
+     "metallicfactor" : 0.1,
+     "metallicfactor" : 0.8
     }
 },{
    "pbrMetallicRoughness" : {
      "baseColorTexture" : {
         "index" : 5
       },
-     "metallicFactor" : 0.0,
-     "roughnessFactor" : 1.0
+     "metallicfactor" : 0.1,
+     "metallicfactor" : 0.8
     }
 },{
    "pbrMetallicRoughness" : {
      "baseColorTexture" : {
         "index" : 6
       },
-     "metallicFactor" : 0.0,
-     "roughnessFactor" : 1.0
+     "metallicfactor" : 0.1,
+     "metallicfactor" : 0.8
     }
 },{
    "pbrMetallicRoughness" : {
      "baseColorTexture" : {
         "index" : 7
       },
-     "metallicFactor" : 0.0,
-     "roughnessFactor" : 1.0
+     "metallicfactor" : 0.1,
+     "metallicfactor" : 0.8
     }
 },{
    "pbrMetallicRoughness" : {
      "baseColorTexture" : {
         "index" : 8
       },
-     "metallicFactor" : 0.0,
-     "roughnessFactor" : 1.0
+     "metallicfactor" : 0.1,
+     "metallicfactor" : 0.8
     }
 },{
    "pbrMetallicRoughness" : {
      "baseColorTexture" : {
         "index" : 9
       },
-     "metallicFactor" : 0.0,
-     "roughnessFactor" : 1.0
+     "metallicfactor" : 0.1,
+     "metallicfactor" : 0.8
     }
 },{
    "pbrMetallicRoughness" : {
      "baseColorTexture" : {
         "index" : 10
       },
-     "metallicFactor" : 0.0,
-     "roughnessFactor" : 1.0
+     "metallicfactor" : 0.1,
+     "metallicfactor" : 0.8
     }
 },{
    "pbrMetallicRoughness" : {
      "baseColorTexture" : {
         "index" : 11
       },
-     "metallicFactor" : 0.0,
-     "roughnessFactor" : 1.0
+     "metallicfactor" : 0.1,
+     "metallicfactor" : 0.8
     }
 },{
    "pbrMetallicRoughness" : {
      "baseColorTexture" : {
         "index" : 12
       },
-     "metallicFactor" : 0.0,
-     "roughnessFactor" : 1.0
+     "metallicfactor" : 0.1,
+     "metallicfactor" : 0.8
     }
 },{
    "pbrMetallicRoughness" : {
      "baseColorTexture" : {
         "index" : 13
       },
-     "metallicFactor" : 0.0,
-     "roughnessFactor" : 1.0
+     "metallicfactor" : 0.1,
+     "metallicfactor" : 0.8
     }
 },{
    "pbrMetallicRoughness" : {
      "baseColorTexture" : {
         "index" : 14
       },
-     "metallicFactor" : 0.0,
-     "roughnessFactor" : 1.0
+     "metallicfactor" : 0.1,
+     "metallicfactor" : 0.8
     }
 },{
    "pbrMetallicRoughness" : {
      "baseColorTexture" : {
         "index" : 15
       },
-     "metallicFactor" : 0.0,
-     "roughnessFactor" : 1.0
+     "metallicfactor" : 0.1,
+     "metallicfactor" : 0.8
     }
 }],
 "textures" : [
