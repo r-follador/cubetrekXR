@@ -31,9 +31,14 @@
         uses Scene Viewer and <a href="https://developers.google.com/ar">ARCore</a> on compatible Android devices, and
         Quick-Look and <a href="https://developer.apple.com/augmented-reality/arkit/">ARKit</a> on compatible iOS devices.
     </p>
+    <p><strong>
+        If your device has AR capabilities, a small button <img src="ar_icon.png" width="20px"> will appear next to the 3D models below. Click it to show the
+        models in your space.</strong>
+    </p>
 <h2>Montalin</h2>
 <p>The mountainous area around Chur, the capital of Grisons centered on Montalin. Texture is a Swisstopo styled map.</p>
-<model-viewer src="montalin.gltf"
+<model-viewer
+              src="montalin.gltf"
               ar
               touch-action="pan-y"
               ar-modes="scene-viewer quick-look webxr"
@@ -51,7 +56,7 @@
 
 <h2>Mount Rainier</h2>
 <p>Large active stratovalcano raising 4392 m.a.s.l. Texture is satellite imagery.</p>
-<model-viewer width=800px height="400px"
+<model-viewer
               src="mtrainier.gltf"
               ar
               touch-action="pan-y"
@@ -68,23 +73,32 @@
     </div>
 </model-viewer>
 
+<h2>Bora Bora</h2>
+<p>Island group in French Polynesia, centered on Mt. Otemanu, a 727m dormant volcano. Texture is from Google Maps. Elevation
+is heavily exaggerated.</p>
+<model-viewer
+              src="borabora.gltf"
+              ar
+              touch-action="pan-y"
+              ar-modes="scene-viewer quick-look webxr"
+              camera-controls
+              shadow-intensity="2"
+              shadow-softness="0.65"
+              exposure="1"
+              max-camera-orbit="Infinity 90deg auto"
+              min-camera-orbit="-Infinity 0deg auto"
+>
+    <div class="progress-bar hide" slot="progress-bar">
+        <div class="update-bar"></div>
+    </div>
+</model-viewer>
+
 <h2>Bonus</h2>
 <p><a href="webxr.html">WebXR Example</a> displaying the Montalin model using Babylon.js.<br>
     Only works on WebXR compatible devices, i.e. recent Android phones.</p>
 
-    <h2>Dive deeper into AR</h2>
-    <h3>iOS AR Quick Looks</h3>
-    <p>
-        Check out more examples <a href="https://developer.apple.com/augmented-reality/quick-look/">here</a>.
-    </p>
-    <h3>Android AR Experiments</h3>
-    <p>
-        Check some examples of what's possible with AR <a href="https://experiments.withgoogle.com/collection/ar/">here</a>.
-    </p>
-
-
 <h2>Copyright</h2>
-<p> Map Data Courtesy of © MapTiler<br>
+<p> Map Data Courtesy of © MapTiler; Bora Bora texture from Google Maps.<br>
     Elevation Data Courtesy of © NASA SRTM V003</p>
 </div>
 </body>
